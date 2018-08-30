@@ -10,8 +10,8 @@ public enum FMethod {
     PUT("PUT"),
     DELETE("DELETE"),
     HEAD("HEAD"),
-    OPTIONS("OPTIONS"),
-    TRACE("TRACE"),
+//    OPTIONS("OPTIONS"),
+//    TRACE("TRACE"),
     PATCH("PATCH"),;
 
     private String method;

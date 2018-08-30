@@ -1,12 +1,13 @@
 package com.zft.oklib;
 
 
-import com.zft.oklib.req.cons.FMethod;
 import com.zft.oklib.interceptor.FLogInterceptor;
 import com.zft.oklib.req.FRequest;
+import com.zft.oklib.req.cons.FMethod;
 
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Call;
 import okhttp3.OkHttpClient;
 
 /**
@@ -56,6 +57,36 @@ public class FHttp {
 
     public static FRequest.Builder delete() {
         return method(FMethod.DELETE);
+    }
+
+
+    /***
+     * 取消请求
+     * @param tag
+     */
+    public static void cancelTag(Object tag) {
+        for (Call call : getInstance().getHttpClient().dispatcher().queuedCalls()) {
+            if (tag.equals(call.request().tag())) {
+                call.cancel();
+            }
+        }
+        for (Call call : getInstance().getHttpClient().dispatcher().runningCalls()) {
+            if (tag.equals(call.request().tag())) {
+                call.cancel();
+            }
+        }
+    }
+
+    /***
+     * 取消所有请求
+     */
+    public static void cancelAllTag() {
+        for (Call call : getInstance().getHttpClient().dispatcher().queuedCalls()) {
+            call.cancel();
+        }
+        for (Call call : getInstance().getHttpClient().dispatcher().runningCalls()) {
+            call.cancel();
+        }
     }
 
     /***
