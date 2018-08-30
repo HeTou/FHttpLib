@@ -1,16 +1,14 @@
 #底部导航
 
-### 简介
+## 简介
 
     okhttp3二次封装
     
 ### 简单用例
 
-####案例
+####GET请求
 
-#####GET请求
-
-```Java
+```java
           Map<String, String> params = new HashMap<>();
                          params.put("name", "fentao");
                          FHttp.get()
@@ -32,7 +30,7 @@
 ;
 ```
 
-#####POST请求
+####POST请求
 
 ```java
     Map<String, String> params2 = new HashMap<>();
@@ -53,7 +51,7 @@
                            });
 ```
 
-#####文本上传
+####文本上传
 
 ```java
      FHttp.post()
@@ -75,7 +73,7 @@
                             });
 ```
 
-#####多文件上传
+####多文件上传
 
 ```java
      Map<String, Object> form = new HashMap<>();
