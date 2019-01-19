@@ -3,16 +3,17 @@ package com.zft.oklib.req;
 import com.zft.oklib.FHttp;
 import com.zft.oklib.callback.IFCallBack;
 import com.zft.oklib.callback.util.FPlatform;
-import com.zft.oklib.req.cons.FBodyType;
-import com.zft.oklib.req.cons.FMethod;
 import com.zft.oklib.err.FNetworkError;
 import com.zft.oklib.err.FRequestCancelError;
 import com.zft.oklib.err.FServerError;
+import com.zft.oklib.log.FLog;
 import com.zft.oklib.req.body.FBinaryBody;
 import com.zft.oklib.req.body.FBody;
 import com.zft.oklib.req.body.FFormBody;
 import com.zft.oklib.req.body.FMultipartBody;
 import com.zft.oklib.req.body.FRawBody;
+import com.zft.oklib.req.cons.FBodyType;
+import com.zft.oklib.req.cons.FMethod;
 import com.zft.oklib.req.header.FHeader;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -54,10 +56,12 @@ public class FPostman {
             if (call.isCanceled()) {
                 requestFail(call, new FRequestCancelError(fRequest.getUrl() + "-reqeust Canceled!"), callBack);
             }
-            if (response.isSuccessful()) {
-                Object o = callBack.parseNetworkResponse(response);
-                requestSuccess(o, callBack);
+            if (!callBack.validateReponse(response)) {
+                requestFail(call, new FServerError("request failed , reponse's code is : " + response.code()), callBack);
+                return;
             }
+            Object o = callBack.parseNetworkResponse(response);
+            requestSuccess(o, callBack);
         } catch (Exception e) {
             requestFail(call, e, callBack);
         }
@@ -82,19 +86,25 @@ public class FPostman {
 
         } else {
             if (body != null) {
-                if (body.bodyType() == FBodyType.X_WWW_FORM_URLENCODED) {   //普通的參數上傳
+                if (body.bodyType() == FBodyType.X_WWW_FORM_URLENCODED) {
+                    //普通的參數上傳
                     FFormBody formBody = (FFormBody) body;
                     requestBody = formBody.body();
-                } else if (body.bodyType() == FBodyType.FORM_DATA) {   //表单上传
+                } else if (body.bodyType() == FBodyType.FORM_DATA) {
+                    //表单上传
                     FMultipartBody multipartBody = (FMultipartBody) body;
                     requestBody = multipartBody.body();
-                } else if (body.bodyType() == FBodyType.RAW) {  // 字符串上传
+                } else if (body.bodyType() == FBodyType.RAW) {
+                    // 字符串上传
                     FRawBody rawBody = (FRawBody) body;
                     requestBody = rawBody.body();
-                } else if (body.bodyType() == FBodyType.BINARY) {  //二进制文件上传
+                } else if (body.bodyType() == FBodyType.BINARY) {
+                    //二进制文件上传
                     FBinaryBody binaryBody = (FBinaryBody) body;
                     requestBody = binaryBody.body();
                 }
+            } else {
+                requestBody = new FormBody.Builder().build();
             }
         }
 //      添加请求头
@@ -125,7 +135,7 @@ public class FPostman {
         @Override
         public void onFailure(Call call, IOException e) {
             e.printStackTrace();
-            requestFail(call, new FNetworkError(e), callBack);
+            requestFail(call, new FNetworkError( e), callBack);
         }
 
         @Override
@@ -173,6 +183,7 @@ public class FPostman {
         platform.execute(new Runnable() {
             @Override
             public void run() {
+                FLog.json(e.getMessage());
                 myCallBack.onError(call, e);
                 myCallBack.onAfter();
             }

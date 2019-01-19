@@ -1,9 +1,5 @@
 package com.zft.oklib.log.i;
 
-import org.json.JSONException;
-
-import javax.xml.transform.TransformerException;
-
 /**
  * 作者:zft
  * 日期:2018/2/5 0005.
@@ -15,14 +11,14 @@ public interface IResolver {
      * @param msg
      * @return
      */
-    String json(String msg) throws JSONException;
+    String json(String msg) throws Exception;
 
     /***
      * 解析xml
      * @param msg
      * @return
      */
-    String xml(String msg) throws TransformerException;
+    String xml(String msg) throws Exception;
 
     /***
      * 获取栈信息

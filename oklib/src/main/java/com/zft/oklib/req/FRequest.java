@@ -1,12 +1,12 @@
 package com.zft.oklib.req;
 
 
+import com.zft.oklib.callback.IFCallBack;
 import com.zft.oklib.req.body.FBinaryBody;
 import com.zft.oklib.req.body.FBody;
 import com.zft.oklib.req.body.FFormBody;
 import com.zft.oklib.req.body.FMultipartBody;
 import com.zft.oklib.req.body.FRawBody;
-import com.zft.oklib.callback.IFCallBack;
 import com.zft.oklib.req.cons.FMethod;
 import com.zft.oklib.req.header.FHeader;
 

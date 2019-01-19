@@ -1,6 +1,7 @@
 package com.zft.oklib.log;
 
 
+
 import com.zft.oklib.log.i.IResolver;
 
 import org.json.JSONArray;
@@ -29,10 +30,12 @@ public class FResolver implements IResolver {
     @Override
     public String json(String msg) throws JSONException {
         String result = "";
-        if (msg.startsWith("{")) {    //对象json
+        //对象json
+        if (msg.startsWith("{")&&msg.endsWith("}")) {
             JSONObject jObj = new JSONObject(msg);
             result = jObj.toString(4);
-        } else if (msg.startsWith("[")) {  //数组json
+            //数组json
+        } else if (msg.startsWith("[")&&msg.endsWith("]")) {
             JSONArray jArray = new JSONArray(msg);
             result = jArray.toString(4);
         } else {

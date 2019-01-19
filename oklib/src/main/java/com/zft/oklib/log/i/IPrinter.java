@@ -1,11 +1,7 @@
 package com.zft.oklib.log.i;
 
 
-import com.zft.oklib.log.config.LogConfig;
-
-import org.json.JSONException;
-
-import javax.xml.transform.TransformerException;
+import java.util.Collection;
 
 /**
  * 作者:zft
@@ -13,26 +9,83 @@ import javax.xml.transform.TransformerException;
  */
 
 public interface IPrinter {
-    void init(LogConfig config);
 
-    //    Verbose
+    /***
+     *  Verbose
+     * @param msg
+     */
     void v(String... msg);
 
-    //    Debug
+    /***
+     * Debug
+     * @param msg
+     */
     void d(String... msg);
 
-    //    Info
+    /***
+     * Info
+     * @param msg
+     */
     void i(String... msg);
 
-    //    Warm
+    /**
+     * Warm
+     *
+     * @param msg
+     */
     void w(String... msg);
 
-    //    Error
+    /***
+     * Error
+     * @param msg
+     */
     void e(String... msg);
 
-    //    Json
-    void json(String... msg) throws JSONException;
+    /**
+     * Json
+     *
+     * @param msg
+     * @throws Exception
+     */
+    void json(String... msg) throws Exception;
 
-    //    Xml
-    void xml(String... msg) throws TransformerException;
+    /**
+     * Xml
+     *
+     * @param msg
+     * @throws Exception
+     */
+    void xml(String... msg) throws Exception;
+
+    /***
+     * List
+     * @param list
+     */
+    void list(Collection<Object> list);
+
+    /***
+     * 设置是否打印日志
+     * @param bool
+     */
+    void setDebug(boolean bool);
+
+    /***
+     * 是否打印日志
+     * @return
+     */
+    boolean isDebug();
+
+    /***
+     * 设置打印标签
+     * @param tag 标签名
+     */
+    void setTag(String tag);
+
+    /***
+     * 获取标签
+     * @return
+     */
+    String getTag();
+
+
 }
